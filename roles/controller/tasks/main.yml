@@ -1,0 +1,13 @@
+---
+- name: Test Echo Controller
+  shell: echo hello world
+- name: install the MySQL client and server packages, and the Python library
+  apt: name={{ item }} state=latest
+  with_items:
+    - python-mysqldb
+    - mysql-server
+    - rabbitmq-server
+- name: update Mysql conf make sure the database can be connect by other nodes
+  copy: src=my.cnf dest=/etc/mysql/my.cnf backup=yes
+  notify:
+    - restart mysql

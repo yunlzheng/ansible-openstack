@@ -4,6 +4,9 @@
 - name: upload hosts file (make sure the internal network is enabled)
   copy: src=hosts dest=/etc/hosts backup=yes
 - name: install network time protocol
-  apt: name=ntp state=latest
+  apt: name={{ item }} state=latest
+  with_items:
+    - ntp
+    - python-mysqldb
 - name: update ntp conf sync with controller
   copy: src=ntp.conf dest=/etc/ntp.conf backup=yes
