@@ -1,7 +1,7 @@
 ---
 - name: Test Echo Controller
   shell: echo hello world
-- name: install the MySQL client and server packages, and the Python library
+- name: install the MySQL client and server packages, rabbitMQ and the Python library
   apt: name={{ item }} state=latest
   with_items:
     - python-mysqldb
