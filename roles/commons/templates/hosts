@@ -1,11 +1,11 @@
 # controller
-10.1.0.11       controller
+{{ controller_host }}       controller
 
 # network
-10.1.0.21       network
+{{ network_host }}       network
 
 # compute1
-10.1.0.31       compute1
+{{ compute1_host }}       compute1
 
 127.0.0.1 localhost
 

@@ -2,7 +2,7 @@
 - name: Test Echo
   shell: echo hello world
 - name: upload hosts file (make sure the internal network is enabled)
-  copy: src=hosts dest=/etc/hosts backup=yes
+  template: src=hosts dest=/etc/hosts backup=yes
 - name: install network time protocol
   apt: name={{ item }} state=latest
   with_items:

@@ -1,3 +1,7 @@
+controller_host: 10.1.0.11
+network_host: 10.1.0.21
+compute1_host: 10.1.0.31
+
 RABBIT_PASS: guest
 KEYSTONE_DBPASS: keystone_db_123456
 DEMO_PASS: demo_123456
