@@ -11,7 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.define "controller" do |controller|
-    controller.vm.box = "ubuntu/precise64"
+    controller.vm.box = "ubuntu/trusty64"
     controller.vm.network "private_network", ip: "10.1.0.11"
     controller.vm.provision "ansible" do |ansible|
       ansible.playbook = "controller.yml"
@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define "network" do |network|
-    network.vm.box = "ubuntu/precise64"
+    network.vm.box = "ubuntu/trusty64"
     network.vm.network "private_network", ip: "10.1.0.21"
     network.vm.provision "ansible" do |ansible|
       ansible.playbook = "network.yml"
@@ -27,7 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define "compute1" do |compute1|
-    compute1.vm.box = "ubuntu/precise64"
+    compute1.vm.box = "ubuntu/trusty64"
     compute1.vm.network "private_network", ip: "10.1.0.31"
     compute1.vm.provision "ansible" do |ansible|
       ansible.playbook = "compute.yml"
