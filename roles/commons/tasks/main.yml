@@ -1,12 +1,20 @@
 ---
-- name: Test Echo
-  shell: echo hello world
+- name: update apt cache once
+  shell: apt-get update && touch apt.update.completed
+  args:
+    creates: apt.update.completed
 - name: upload hosts file (make sure the internal network is enabled)
   template: src=hosts dest=/etc/hosts backup=yes
-- name: install network time protocol
-  apt: name={{ item }} state=latest update_cache=yes
+- name: install common software packages
+  apt: name={{ item }} state=latest
   with_items:
     - ntp
+    - python-dev
+    - python-pip
     - python-mysqldb
+- name: update pip
+  pip: name={{ item }} state=latest
+  with_items:
+    - pip
 - name: update ntp conf sync with controller
   copy: src=ntp.conf dest=/etc/ntp.conf backup=yes

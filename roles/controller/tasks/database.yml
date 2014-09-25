@@ -1,0 +1,33 @@
+---
+- name: update Mysql conf make sure the database can be connect by other nodes
+  copy: src=my.cnf dest=/etc/mysql/my.cnf backup=yes
+  notify:
+    - restart mysql
+
+- name: create keystone database
+  mysql_db: name=keystone state=present
+- name: create keystone database localhost user
+  mysql_user: name=keystone password={{ KEYSTONE_DBPASS }} priv=keystone.*:ALL state=present
+- name: create keystone database remote user
+  mysql_user: host=% name=keystone password={{ KEYSTONE_DBPASS }} priv=keystone.*:ALL state=present
+
+- name: create glance database
+  mysql_db: name=glance state=present
+- name: create glance database localhost user
+  mysql_user: name=glance password={{ GLANCE_DBPASS }} priv=glance.*:ALL state=present
+- name: create glance database remote user
+  mysql_user: host=% name=glance password={{ GLANCE_DBPASS }} priv=glance.*:ALL state=present
+
+- name: create neutron database
+  mysql_db: name=neutron state=present
+- name: create neutron database localhost user
+  mysql_user: name=neutron password={{ NEUTRON_DBPASS }} priv=neutron.*:ALL state=present
+- name: create neutron database remote user
+  mysql_user: host=% name=neutron password={{ NEUTRON_DBPASS }} priv=neutron.*:ALL state=present
+
+- name: create nova database
+  mysql_db: name=nova state=present
+- name: create nova database localhost user
+  mysql_user: name=nova password={{ NOVA_DBPASS }} priv=nova.*:ALL state=present
+- name: create glance database remote user
+  mysql_user: host=% name=nova password={{ NOVA_DBPASS }} priv=nova.*:ALL state=present

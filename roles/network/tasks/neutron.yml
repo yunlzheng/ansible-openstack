@@ -1,0 +1,59 @@
+---
+- name: enable certain kernel networking functions
+  template: src=sysctl.conf dest=/etc/sysctl.conf backup=yes
+- name: implement the kernel networking change
+  shell: sysctl -p
+- name: install the Networking components
+  apt: name={{ item }}
+  with_items:
+    - neutron-plugin-ml2
+    - neutron-plugin-openvswitch-agent
+    - openvswitch-datapath-dkms
+    - neutron-l3-agent
+    - neutron-dhcp-agent
+- name: configure the Networking common components
+  template: src=neutron.conf dest=/etc/neutron/neutron.conf backup=yes
+
+- name: configure the Layer-3 (L3) agent
+  template: src=l3_agent.ini dest=/etc/neutron/l3_agent.ini backup=yes
+
+- name: configure the DHCP agent
+  template: src=dhcp_agent.ini dest=/etc/neutron/dhcp_agent.ini backup=yes
+
+- name: create or update dnsmasq-neutron.conf
+  template: src=dnsmasq-neutron.conf dest=/etc/neutron/dnsmasq-neutron.conf
+
+- name: killall dnsmasq process
+  shell: killall dnsmasq || echo error
+
+- name: configure the metadata agen
+  template: src=metadata_agent.ini dest=/etc/neutron/metadata_agent.ini backup=yes
+
+- name: configure the Modular Layer 2 (ML2) plug-in
+  template: src=ml2_conf.ini dest=/etc/neutron/plugins/ml2/ml2_conf.ini backup=yes
+
+- name: Restart the OVS service
+  service: name=openvswitch-switch state=restarted
+
+- name: Add the integration bridge
+  shell: ovs-vsctl add-br br-int && touch neutron.br-int.added
+  args:
+    creates: neutron.br-int.added
+
+- name: Add the external bridge
+  shell: ovs-vsctl add-br br-ex && touch neutron.br-ex.added
+  args:
+    creates: neutron.br-ex.added
+
+- name: Add a port to the external bridge that connects to the physical external network interface
+  shell: ovs-vsctl add-port br-ex {{ INTERFACE_NAME }} && touch neutron.br-ex-port.added
+  args:
+    creates: neutron.br-ex-port.added
+
+- name: restart service
+  shell: echo hello service
+  notify:
+    - restart neutron-plugin-openvswitch-agent
+    - restart neutron-l3-agent
+    - restart neutron-dhcp-agent
+    - restart neutron-metadata-agent

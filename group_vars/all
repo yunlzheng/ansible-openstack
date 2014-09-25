@@ -22,3 +22,10 @@ CEILOMETER_DBPASS: ceilometer_db_123456
 CEILOMETER_PASS: ceilometer_123456
 TROVE_DBPASS: trove_db_123456
 TROVE_PASS: trove_123456
+
+METADATA_SECRET: metadata_123456
+INSTANCE_TUNNELS_INTERFACE_IP_ADDRESS: 11.0.0.11
+INTERFACE_NAME: eth2
+
+build_in_image: http://cdn.download.cirros-cloud.net/0.3.2/cirros-0.3.2-x86_64-disk.img
+build_in_image_name: cirros-0.3.2-x86_64-disk.img

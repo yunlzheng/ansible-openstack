@@ -1,0 +1,28 @@
+---
+- name: install the Networking components
+  apt: name={{ item }} state=present
+  with_items:
+    - neutron-server
+    - neutron-plugin-ml2
+- name: update neutron configuration
+  template: src=neutron.conf dest=/etc/neutron/neutron.conf backup=yes
+  notify:
+    - restart nova-api
+    - restart nova-scheduler
+    - restart nova-conductor
+    - restart neutron-server
+- name: configure netron plugins
+  template: src=ml2_conf.ini dest=/etc/neutron/plugins/ml2/ml2_conf.ini backup=yes
+  notify:
+    - restart nova-api
+    - restart nova-scheduler
+    - restart nova-conductor
+    - restart neutron-server
+
+- name: configure compute use networking
+  template: src=nova.conf dest=/etc/nova/nova.conf backup=yes
+  notify:
+    - restart nova-api
+    - restart nova-scheduler
+    - restart nova-conductor
+    - restart neutron-server

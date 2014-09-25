@@ -2,12 +2,27 @@
 - name: Test Echo Controller
   shell: echo hello world
 - name: install the MySQL client and server packages, rabbitMQ and the Python library
-  apt: name={{ item }} state=latest
+  apt: name={{ item }} state=present
   with_items:
     - python-mysqldb
     - mysql-server
     - rabbitmq-server
-- name: update Mysql conf make sure the database can be connect by other nodes
-  copy: src=my.cnf dest=/etc/mysql/my.cnf backup=yes
-  notify:
-    - restart mysql
+
+- name: install oslo package
+  pip: name=oslo.rootwrap state=latest
+- name: install openstack project clients
+  pip: name=python-{{ item }}client state=latest
+  with_items:
+    - ceilometer
+    - cinder
+    - heat
+    - keystone
+    - neutron
+    - swift
+    - trove
+
+- include: database.yml
+- include: keystone.yml
+- include: glance.yml
+- include: nova.yml
+- include: neutron.yml
