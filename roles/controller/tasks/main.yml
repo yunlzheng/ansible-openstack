@@ -11,3 +11,15 @@
   copy: src=my.cnf dest=/etc/mysql/my.cnf backup=yes
   notify:
     - restart mysql
+- name: install openstack project clients
+  pip: name=python-{{ item }}client
+  with_items:
+    - ceilometer
+    - cinder
+    - glance
+    - heat
+    - keystone
+    - neutron
+    - nova
+    - swift
+    - trove

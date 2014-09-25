@@ -23,4 +23,7 @@
 - name: define users, tenants, and roles
   shell: /opt/init.identity.sh creates=init.identity.completed && touch init.identity.completed || touch init.identity.error
 - name: upload keystone source file
-  template: src=admin-openrc dest=/home/vagrant/admin-openrc
+  template: src={{ item }} dest=/home/vagrant/{{ item }}
+  with_items:
+    - admin-openrc.sh
+    - demo-openrc.sh
