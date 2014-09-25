@@ -19,7 +19,8 @@
   shell: (crontab -l -u keystone 2>&1 | grep -q token_flush) || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
 - name: upload define users, tenants, and roles script
   template: src=init.identity.script dest=/opt/init.identity.sh mode=744
+# TODO: How to check this step is work ok?
 - name: define users, tenants, and roles
   shell: /opt/init.identity.sh creates=init.identity.completed && touch init.identity.completed || touch init.identity.error
-- name: upload catalog templates
-  template: src=default_catalog.templates dest=/etc/keystone/default_catalog.templates backup=yes
+- name: upload keystone source file
+  template: src=admin-openrc dest=/home/vagrant/admin-openrc

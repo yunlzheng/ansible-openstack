@@ -4,7 +4,7 @@
 - name: upload hosts file (make sure the internal network is enabled)
   template: src=hosts dest=/etc/hosts backup=yes
 - name: install network time protocol
-  apt: name={{ item }} state=latest
+  apt: name={{ item }} state=latest update_cache=yes
   with_items:
     - ntp
     - python-mysqldb
