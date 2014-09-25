@@ -18,3 +18,11 @@ keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0
 # regist keystone
 keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-create --name=keystone --type=identity --description="OpenStack Identity"
 keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 endpoint-create --service_id=$(keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-list | awk '/ identity / {print $2}') --publicurl=http://controller:5000/v2.0 --internalurl=http://controller:5000/v2.0 --adminurl=http://controller:35357/v2.0
+
+# Create a glance user that the Image Service can use to authenticate with the Identity service
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 user-create --name=glance --pass={{ GLANCE_PASS }} --email=glance@example.com
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 user-role-add --user=glance --tenant=service --role=admin
+
+#Register the Image Service with the Identity service so that other OpenStack services can locate it
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-create --name=glance --type=image --description="OpenStack Image Service"
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 endpoint-create --service-id=$(keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-list | awk '/ image / {print $2}') --publicurl=http://controller:9292 --internalurl=http://controller:9292 --adminurl=http://controller:9292

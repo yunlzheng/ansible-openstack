@@ -1,0 +1,30 @@
+---
+- name: test echo glance
+  shell: echo hello glance
+- name: install the image service
+  apt: name={{ item }}
+  with_items:
+    - glance
+    - python-glanceclient
+- name: upload glance configuration files
+  template: src={{ item }} dest=/etc/glance/{{ item }} backup=yes
+  with_items:
+    - glance-api.conf
+    - glance-registry.conf
+  notify:
+    - restart glance-registry
+    - restart glance-api
+- name: try remove the default sqllite db
+  shell: rm /var/lib/glance/glance.sqlite || touch sqllite.db.removed
+- name: create glance database
+  mysql_db: name=glance state=present
+- name: create glance database localhost user
+  mysql_user: name=glance password={{ GLANCE_DBPASS }} priv=glance.*:ALL state=present
+- name: create glance database remote user
+  mysql_user: host=% name=glance password={{ GLANCE_DBPASS }} priv=glance.*:ALL state=present
+- name: sync database for glance
+  shell: su -s /bin/sh -c "glance-manage db_sync" glance
+- name: download cirros-0.3.2-x86_64 demo images
+  get_url: url={{ build_in_image }} dest=/tmp/{{ build_in_image_name }}
+- name: upload build_in images to glance service
+  shell: glance --os-username=admin --os-password={{ ADMIN_PASS }} --os-tenant-name=admin --os-auth-url=http://controller:35357/v2.0 image-create --name "{{ build_in_image_name }}" --disk-format qcow2 --container-format bare --is-public True --progress < /tmp/{{ build_in_image_name }}

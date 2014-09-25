@@ -16,7 +16,6 @@
   with_items:
     - ceilometer
     - cinder
-    - glance
     - heat
     - keystone
     - neutron
