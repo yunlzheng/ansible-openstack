@@ -7,12 +7,9 @@
     - restart keystone
 - name: delete sqllite database
   shell: rm /var/lib/keystone/keystone.db || echo sqllite database already removed
-- name: create keystone database
-  mysql_db: name=keystone state=present
-- name: create keystone database localhost user
-  mysql_user: name=keystone password={{ KEYSTONE_DBPASS }} priv=keystone.*:ALL state=present
-- name: create keystone database remote user
-  mysql_user: host=% name=keystone password={{ KEYSTONE_DBPASS }} priv=keystone.*:ALL state=present
+
+- include: database.yml
+
 - name: create the database tables for the Identity Service
   shell: su -s /bin/sh -c "keystone-manage db_sync" keystone
 - name: configuring a periodic task using cron to purge expired tokens hourly

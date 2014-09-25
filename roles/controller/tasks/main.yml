@@ -11,6 +11,8 @@
   copy: src=my.cnf dest=/etc/mysql/my.cnf backup=yes
   notify:
     - restart mysql
+- name: install oslo package
+  pip: name=oslo.rootwrap state=latest
 - name: install openstack project clients
   pip: name=python-{{ item }}client state=latest
   with_items:
@@ -21,4 +23,3 @@
     - neutron
     - swift
     - trove
-    - oslo.rootwrap
