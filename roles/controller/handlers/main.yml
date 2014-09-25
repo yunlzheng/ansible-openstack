@@ -1,3 +1,27 @@
 ---
 - name: restart mysql
   service: name=mysql state=restarted
+
+- name: restart keystone
+  service: name=keystone state=restarted
+
+- name: restart glance-registry
+  service: name=glance-registry state=restarted
+- name: restart glance-api
+  service: name=glance-api state=restarted
+
+- name: restart nova-api
+  service: name=nova-api state=restarted
+- name: restart nova-cert
+  service: name=nova-cert state=restarted
+- name: restart nova-consoleauth
+  service: name=nova-consoleauth state=restarted
+- name: restart nova-scheduler
+  service: name=nova-scheduler state=restarted
+- name: restart nova-conductor
+  service: name=nova-conductor state=restarted
+- name: restart nova-novncproxy
+  service: name=nova-novncproxy state=restarted
+
+- name: restart neutron-server
+  service: name=neutron-server state=restarted

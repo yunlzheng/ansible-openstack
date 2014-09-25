@@ -5,7 +5,3 @@
   roles:
     - commons
     - controller
-    - keystone
-    - glance
-    - nova
-    - neutron

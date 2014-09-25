@@ -23,11 +23,5 @@
     - restart nova-novncproxy
 - name: try remove the nova sqllite db file
   shell: rm /var/lib/nova/nova.sqlite || touch nova.sqllite.db.removed
-- name: create nova database
-  mysql_db: name=nova state=present
-- name: create nova database localhost user
-  mysql_user: name=nova password={{ NOVA_DBPASS }} priv=nova.*:ALL state=present
-- name: create glance database remote user
-  mysql_user: host=% name=nova password={{ NOVA_DBPASS }} priv=nova.*:ALL state=present
 - name: synd nova database
   shell: su -s /bin/sh -c "nova-manage db sync" nova
