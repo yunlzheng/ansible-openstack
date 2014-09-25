@@ -7,3 +7,4 @@
     - controller
     - keystone
     - glance
+    - nova

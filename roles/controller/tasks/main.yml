@@ -2,7 +2,7 @@
 - name: Test Echo Controller
   shell: echo hello world
 - name: install the MySQL client and server packages, rabbitMQ and the Python library
-  apt: name={{ item }} state=latest
+  apt: name={{ item }} state=present
   with_items:
     - python-mysqldb
     - mysql-server
@@ -12,13 +12,13 @@
   notify:
     - restart mysql
 - name: install openstack project clients
-  pip: name=python-{{ item }}client
+  pip: name=python-{{ item }}client state=latest
   with_items:
     - ceilometer
     - cinder
     - heat
     - keystone
     - neutron
-    - nova
     - swift
     - trove
+    - oslo.rootwrap

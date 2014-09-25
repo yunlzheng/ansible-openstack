@@ -12,10 +12,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.define "controller" do |controller|
     controller.vm.box = "ubuntu/trusty64"
+
     controller.vm.network "private_network", ip: "10.1.0.11"
     controller.vm.provision "ansible" do |ansible|
       ansible.playbook = "controller.yml"
     end
+
+    controller.vm.provider "virtualbox" do |v|
+      v.memory = 2048
+    end
+
   end
 
   config.vm.define "network" do |network|
@@ -24,6 +30,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     network.vm.provision "ansible" do |ansible|
       ansible.playbook = "network.yml"
     end
+
+    network.vm.provider "virtualbox" do |v|
+      v.memory = 512
+    end
+
   end
 
   config.vm.define "compute1" do |compute1|
@@ -32,6 +43,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     compute1.vm.provision "ansible" do |ansible|
       ansible.playbook = "compute.yml"
     end
+
+    compute1.vm.provider "virtualbox" do |v|
+      v.memory = 2048
+    end
+
   end
 
   # Disable automatic box update checking. If you disable this, then

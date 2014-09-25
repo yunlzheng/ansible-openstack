@@ -15,7 +15,7 @@
     - restart glance-registry
     - restart glance-api
 - name: try remove the default sqllite db
-  shell: rm /var/lib/glance/glance.sqlite || touch sqllite.db.removed
+  shell: rm /var/lib/glance/glance.sqlite || touch glance.sqllite.db.removed
 - name: create glance database
   mysql_db: name=glance state=present
 - name: create glance database localhost user
@@ -27,4 +27,6 @@
 - name: download cirros-0.3.2-x86_64 demo images
   get_url: url={{ build_in_image }} dest=/tmp/{{ build_in_image_name }}
 - name: upload build_in images to glance service
-  shell: glance --os-username=admin --os-password={{ ADMIN_PASS }} --os-tenant-name=admin --os-auth-url=http://controller:35357/v2.0 image-create --name "{{ build_in_image_name }}" --disk-format qcow2 --container-format bare --is-public True --progress < /tmp/{{ build_in_image_name }}
+  shell: glance --os-username=admin --os-password={{ ADMIN_PASS }} --os-tenant-name=admin --os-auth-url=http://controller:35357/v2.0 image-create --name "{{ build_in_image_name }}" --disk-format qcow2 --container-format bare --is-public True --progress < /tmp/{{ build_in_image_name }} && touch glance.import.completed
+  args:
+    creates: glance.import.completed

@@ -4,3 +4,4 @@
   sudo: True
   roles:
     - commons
+    - neutron

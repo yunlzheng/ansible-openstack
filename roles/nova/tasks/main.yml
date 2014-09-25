@@ -1,0 +1,33 @@
+---
+- name: echo controller nova
+  shell: echo hello controller nova
+- name: Compute packages necessary for the controller node
+  apt: name={{ item }} state=present
+  with_items:
+    - nova-api
+    - nova-cert
+    - nova-conductor
+    - nova-consoleauth
+    - nova-novncproxy
+    - nova-scheduler
+    - python-novaclient
+    - python-oslo.rootwrap
+- name: upload nova configuration file
+  template: src=nova.conf dest=/etc/nova/nova.conf backup=yes
+  notify:
+    - restart nova-api
+    - restart nova-cert
+    - restart nova-consoleauth
+    - restart nova-scheduler
+    - restart nova-conductor
+    - restart nova-novncproxy
+- name: try remove the nova sqllite db file
+  shell: rm /var/lib/nova/nova.sqlite || touch nova.sqllite.db.removed
+- name: create nova database
+  mysql_db: name=nova state=present
+- name: create nova database localhost user
+  mysql_user: name=nova password={{ NOVA_DBPASS }} priv=nova.*:ALL state=present
+- name: create glance database remote user
+  mysql_user: host=% name=nova password={{ NOVA_DBPASS }} priv=nova.*:ALL state=present
+- name: synd nova database
+  shell: su -s /bin/sh -c "nova-manage db sync" nova

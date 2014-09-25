@@ -1,0 +1,7 @@
+---
+- name: create neutron database
+  mysql_db: name=neutron state=present
+- name: create neutron database localhost user
+  mysql_user: name=neutron password={{ NEUTRON_DBPASS }} priv=neutron.*:ALL state=present
+- name: create neutron database remote user
+  mysql_user: host=% name=neutron password={{ NEUTRON_DBPASS }} priv=neutron.*:ALL state=present
