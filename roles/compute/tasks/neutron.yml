@@ -1,0 +1,22 @@
+---
+- name: enable certain kernel networking functions
+  template: src=sysctl.conf dest=/etc/sysctl.conf backup=yes
+- name: implement the kernel networking change
+  shell: sysctl -p
+- name: install the Networking components
+  apt: name={{ item }}
+  with_items:
+    - neutron-common
+    - neutron-plugin-ml2
+    - neutron-plugin-openvswitch-agent
+    - openvswitch-datapath-dkms
+- name: restart openvswitch-switch
+  service: name=openvswitch-switch state=restarted
+- name: Add the integration bridge
+  shell: ovs-vsctl add-br br-int && touch neutron.br-int.added
+  args:
+    creates: neutron.br-int.added
+- name: restart nova-compute
+  service: name=nova-compute state=restarted
+- name: restart neutron-plugin-openvswitch-agent
+  service: name=neutron-plugin-openvswitch-agent state=restarted

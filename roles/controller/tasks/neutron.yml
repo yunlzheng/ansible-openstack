@@ -26,3 +26,8 @@
     - restart nova-scheduler
     - restart nova-conductor
     - restart neutron-server
+
+- name: upload init network scripts
+  template: src=init.networks.script dest=/opt/init.networks.script mode=744
+- name: Create initial networks
+  shell: /opt/init.networks.script creates=init.network.completed && touch init.network.completed || touch init.network.error

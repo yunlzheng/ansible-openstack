@@ -1,0 +1,22 @@
+---
+- name: install dashbord
+  apt: name={{ item }}
+  with_items:
+    - apache2
+    - memcached
+    - libapache2-mod-wsgi
+    - openstack-dashboard
+- name: remove openstack ubuntu theme
+  apt: name=openstack-dashboard-ubuntu-theme state=absent
+
+- name: update openstack dashbord apache2 configration
+  template: src=openstack-dashboard.conf dest=/etc/apache2/sites-available/openstack-dashboard.conf backup=yes
+  notify:
+   - restart apache2
+   - restart memcached
+
+- name: update horize settings file
+  template: src=local_settings.py dest=/etc/openstack-dashboard/local_settings.py backup=yes
+  notify:
+    - restart apache2
+    - restart memcached
