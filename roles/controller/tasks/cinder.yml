@@ -4,3 +4,20 @@
   with_items:
     - cinder-api
     - cinder-scheduler
+
+- name: upload cinder configuration file
+  template: src=etc/cinder/cinder.conf dest=/etc/cinder/cinder.conf
+  notify:
+    - restart cinder-scheduler
+    - restart cinder-api
+
+- name: sync cinder database
+  shell: su -s /bin/sh -c "cinder-manage db sync" cinder && cinder
+
+- name: keystone register cinder service user [step1 upload script]
+  template: src=scripts/keystone/init.cinder.script dest=/opt/init.cinder.sh mode=744
+
+- name: keystone register cinder service user [step2 load script]
+  shell: /opt/init.cinder.sh && logs/registr.cinder.completed
+  args:
+    creates: logs/registr.cinder.completed

@@ -8,8 +8,11 @@
     - mysql-server
     - rabbitmq-server
 
-- name: install oslo package
-  pip: name=oslo.rootwrap state=latest
+- name: install oslo packages
+  pip: name=oslo.{{ item }} state=latest
+  with_items:
+    - rootwrap
+    - messaging
 - name: install openstack project clients
   pip: name=python-{{ item }}client state=latest
   with_items:

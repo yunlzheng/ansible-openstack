@@ -18,3 +18,8 @@
     - pip
 - name: update ntp conf sync with controller
   copy: src=ntp.conf dest=/etc/ntp.conf backup=yes
+
+- name: create ansible-log dir in server
+  shell: mkdir logs
+  args:
+    creates: logs

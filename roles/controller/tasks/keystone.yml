@@ -9,16 +9,16 @@
   shell: rm /var/lib/keystone/keystone.db || echo sqllite database already removed
 
 - include: database.yml
-
 - name: create the database tables for the Identity Service
   shell: su -s /bin/sh -c "keystone-manage db_sync" keystone
 - name: configuring a periodic task using cron to purge expired tokens hourly
   shell: (crontab -l -u keystone 2>&1 | grep -q token_flush) || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
 - name: upload define users, tenants, and roles script
   template: src=init.identity.script dest=/opt/init.identity.sh mode=744
-# TODO: How to check this step is work ok?
 - name: define users, tenants, and roles
-  shell: /opt/init.identity.sh creates=init.identity.completed && touch init.identity.completed || touch init.identity.error
+  shell: /opt/init.identity.sh && touch init.identity.completed || touch init.identity.error
+  args:
+    creates: init.identity.completed
 - name: upload keystone source file
   template: src={{ item }} dest=/home/vagrant/{{ item }}
   with_items:

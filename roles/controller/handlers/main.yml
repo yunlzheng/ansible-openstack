@@ -31,3 +31,9 @@
 
 - name: restart memcached
   service: name=memcached state=restarted
+
+- name: restart cinder-scheduler
+  service: name=cinder-scheduler state=restarted
+
+- name: restart cinder-api
+  service: name=cinder-api state=restarted
