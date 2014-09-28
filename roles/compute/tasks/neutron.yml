@@ -1,0 +1,24 @@
+---
+- name: ensure IP forward bit is activated
+  sysctl: name=net.ipv4.ip_forward value=1 state=present reload=yes
+- name: ensure IPv4 rp filter is deactivated
+  sysctl: name=net.ipv4.conf.all.rp_filter value=0 state=present reload=yes
+- name: ensure IPv4 default rp filter is deactivated
+  sysctl: name=net.ipv4.conf.default.rp_filter value=0 state=present reload=yes
+- name: install the Networking components
+  apt: name={{ item }}
+  with_items:
+    - neutron-common
+    - neutron-plugin-ml2
+    - neutron-plugin-openvswitch-agent
+    - openvswitch-datapath-dkms
+- name: restart openvswitch-switch
+  service: name=openvswitch-switch state=restarted
+- name: Add the integration bridge
+  shell: ovs-vsctl add-br br-int && touch neutron.br-int.added
+  args:
+    creates: neutron.br-int.added
+- name: restart nova-compute
+  service: name=nova-compute state=restarted
+- name: restart neutron-plugin-openvswitch-agent
+  service: name=neutron-plugin-openvswitch-agent state=restarted

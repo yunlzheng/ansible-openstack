@@ -12,3 +12,5 @@
     - restart nova-compute
 - name: try remove compute node sqllite db file
   shell: rm /var/lib/nova/nova.sqlite || touch nova.sqllite.removed
+
+- include: neutron.yml

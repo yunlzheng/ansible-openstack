@@ -4,6 +4,11 @@
   with_items:
     - neutron-server
     - neutron-plugin-ml2
+
+- name: find service tenent id
+  shell: keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 tenant-get service | grep id | awk '{print $4}'
+  register: NOVA_ADMIN_TENANT_ID
+
 - name: update neutron configuration
   template: src=neutron.conf dest=/etc/neutron/neutron.conf backup=yes
   notify:
@@ -26,3 +31,10 @@
     - restart nova-scheduler
     - restart nova-conductor
     - restart neutron-server
+
+- name: upload init network scripts
+  template: src=init.networks.script dest=/opt/init.networks.script mode=744
+- name: Create initial networks
+  shell: /opt/init.networks.script creates=init.network.completed && touch init.network.completed || touch init.network.error
+  args:
+    creates: init.network.completed

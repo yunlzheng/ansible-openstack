@@ -1,8 +1,11 @@
 ---
-- name: enable certain kernel networking functions
-  template: src=sysctl.conf dest=/etc/sysctl.conf backup=yes
-- name: implement the kernel networking change
-  shell: sysctl -p
+- name: ensure IP forward bit is activated
+  sysctl: name=net.ipv4.ip_forward value=1 state=present reload=yes
+- name: ensure IPv4 rp filter is deactivated
+  sysctl: name=net.ipv4.conf.all.rp_filter value=0 state=present reload=yes
+- name: ensure IPv4 default rp filter is deactivated
+  sysctl: name=net.ipv4.conf.default.rp_filter value=0 state=present reload=yes
+
 - name: install the Networking components
   apt: name={{ item }}
   with_items:

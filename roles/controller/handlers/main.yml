@@ -25,3 +25,9 @@
 
 - name: restart neutron-server
   service: name=neutron-server state=restarted
+
+- name: restart apache2
+  service: name=apache2 state=restarted
+
+- name: restart memcached
+  service: name=memcached state=restarted
