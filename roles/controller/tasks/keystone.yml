@@ -7,7 +7,8 @@
     - restart keystone
 - name: delete sqllite database
   shell: rm /var/lib/keystone/keystone.db || echo sqllite database already removed
-
+- name: restart keystone
+  service: name=keystone state=restarted
 - include: database.yml
 - name: create the database tables for the Identity Service
   shell: su -s /bin/sh -c "keystone-manage db_sync" keystone

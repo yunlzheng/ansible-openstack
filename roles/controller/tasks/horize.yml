@@ -11,12 +11,12 @@
 
 - name: update openstack dashbord apache2 configration
   template: src=openstack-dashboard.conf dest=/etc/apache2/sites-available/openstack-dashboard.conf backup=yes
-  notify:
-   - restart apache2
-   - restart memcached
 
 - name: update horize settings file
   template: src=local_settings.py dest=/etc/openstack-dashboard/local_settings.py backup=yes
-  notify:
-    - restart apache2
-    - restart memcached
+
+- name: restart apache2
+  service: name=apache2 state=restarted
+
+- name: restart memcached
+  service: name=memcached state=restarted

@@ -14,6 +14,12 @@
   notify:
     - restart glance-registry
     - restart glance-api
+
+- name: restart glance-registry
+  service: name=glance-registry state=restarted
+- name: restart glance-api
+  service: name=glance-api state=restarted
+
 - name: try remove the default sqllite db
   shell: rm /var/lib/glance/glance.sqlite || touch glance.sqllite.db.removed
 - name: sync database for glance
