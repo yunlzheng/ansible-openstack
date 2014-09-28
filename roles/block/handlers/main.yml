@@ -1,0 +1,5 @@
+---
+- name: resatrt cinder-volume
+  service: name=cinder-volume state=restarted
+- name: resatrt tgt
+  service: name=tgt state=restarted
