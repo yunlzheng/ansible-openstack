@@ -14,13 +14,18 @@
     - python-oslo.rootwrap
 - name: upload nova configuration file
   template: src=nova.conf dest=/etc/nova/nova.conf backup=yes
-  notify:
-    - restart nova-api
-    - restart nova-cert
-    - restart nova-consoleauth
-    - restart nova-scheduler
-    - restart nova-conductor
-    - restart nova-novncproxy
+- name: restart nova-api
+  service: name=nova-api state=restarted
+- name: restart nova-cert
+  service: name=nova-cert state=restarted
+- name: restart nova-consoleauth
+  service: name=nova-consoleauth state=restarted
+- name: restart nova-scheduler
+  service: name=nova-scheduler state=restarted
+- name: restart nova-conductor
+  service: name=nova-conductor state=restarted
+- name: restart nova-novncproxy
+  service: name=nova-novncproxy state=restarted
 - name: try remove the nova sqllite db file
   shell: rm /var/lib/nova/nova.sqlite || touch nova.sqllite.db.removed
 - name: synd nova database

@@ -11,6 +11,12 @@
     - restart cinder-scheduler
     - restart cinder-api
 
+- name: restart cinder-scheduler
+  service: name=cinder-scheduler state=restarted
+
+- name: restart cinder-api
+  service: name=cinder-api state=restarted
+
 - name: sync cinder database
   shell: su -s /bin/sh -c "cinder-manage db sync" cinder && cinder
 
