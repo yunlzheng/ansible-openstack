@@ -1,0 +1,6 @@
+---
+- name: install cinder component package
+  apt: name={{ item }}
+  with_items:
+    - cinder-api
+    - cinder-scheduler

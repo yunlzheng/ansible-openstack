@@ -27,3 +27,4 @@
 - include: nova.yml
 - include: neutron.yml
 - include: horize.yml
+- include: cinder.yml

@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     compute1.vm.provider "virtualbox" do |v|
-      v.memory = 2048
+      v.memory = 4096
     end
 
   end
