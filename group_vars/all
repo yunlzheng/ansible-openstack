@@ -1,6 +1,7 @@
 controller_host: 10.1.0.11
 network_host: 10.1.0.21
 compute1_host: 10.1.0.31
+block1_host: 10.1.0.41
 
 ADMIN_TOKEN: admin
 RABBIT_PASS: guest

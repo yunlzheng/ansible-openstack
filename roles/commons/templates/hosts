@@ -7,6 +7,9 @@
 # compute1
 {{ compute1_host }}       compute1
 
+#block1
+{{ block1_host }}  block1
+
 127.0.0.1 localhost
 
 # The following lines are desirable for IPv6 capable hosts

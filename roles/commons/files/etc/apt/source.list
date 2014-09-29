@@ -1,0 +1,10 @@
+deb http://mirrors.oschina.net/ubuntu/ trusty main restricted universe multiverse
+deb http://mirrors.oschina.net/ubuntu/ trusty-security main restricted universe multiverse
+deb http://mirrors.oschina.net/ubuntu/ trusty-updates main restricted universe multiverse
+deb http://mirrors.oschina.net/ubuntu/ trusty-proposed main restricted universe multiverse
+deb http://mirrors.oschina.net/ubuntu/ trusty-backports main restricted universe multiverse
+deb-src http://mirrors.oschina.net/ubuntu/ trusty main restricted universe multiverse
+deb-src http://mirrors.oschina.net/ubuntu/ trusty-security main restricted universe multiverse
+deb-src http://mirrors.oschina.net/ubuntu/ trusty-updates main restricted universe multiverse
+deb-src http://mirrors.oschina.net/ubuntu/ trusty-proposed main restricted universe multiverse
+deb-src http://mirrors.oschina.net/ubuntu/ trusty-backports main restricted universe multiverse
