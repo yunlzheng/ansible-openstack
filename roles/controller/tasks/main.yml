@@ -32,4 +32,4 @@
 - include: horize.yml
 - include: cinder.yml
 - include: heat.yml
-# - include: ceilometer.yml
+- include: ceilometer.yml

@@ -10,3 +10,32 @@
     - ceilometer-alarm-notifier
     - python-ceilometerclient
     - mongodb-server
+
+- name: Configure MongoDB to make it listen on the controller management IP address
+  template: src=etc/mongodb.conf dest=/etc/mongodb.conf backup=yes
+
+- name: Restart the MongoDB service to apply the configuration change
+  service: name=mongodb state=restarted
+
+- name: Create the database and a ceilometer database user
+  mongodb_user: login_host=controller database=ceilometer user=ceilometer password={{ CEILOMETER_DBPASS }} roles='readWrite,dbAdmin' state=present
+
+- name: upload ceilometer configuration file
+  template: src=etc/ceilometer/ceilometer.conf dest=/etc/ceilometer/ceilometer.conf backup=yes
+
+- name: keystone register ceilometer service user [step1 upload script]
+  template: src=scripts/ceilometer/init.ceilometer.script dest=/opt/init.ceilometer.sh mode=744
+
+- name: keystone register ceilometer service user [step2 load script]
+  shell: /opt/init.ceilometer.sh && touch logs/registr.ceilometer.completed
+  args:
+    creates: logs/registr.ceilometer.completed
+
+- name: restart ceilometer-services
+  service: name={{ item }} state=restarted
+  with_items:
+    - ceilometer-agent-notification
+    - ceilometer-api
+    - ceilometer-collector
+    - ceilometer-alarm-evaluator
+    - ceilometer-alarm-notifier
