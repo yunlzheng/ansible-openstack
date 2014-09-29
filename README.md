@@ -34,6 +34,7 @@ vagrant up --provision
 * controller 10.1.0.11(1 processor, memery 1 GB)
 * network 10.1.0.12(1 processor, memery 512 MB)
 * compute1 10.1.0.13(1 processor, memory 2 GB)
+* block1 10.1.0.41(1 processor, memory 512 MB)
 
 ## How to use it
 

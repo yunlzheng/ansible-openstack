@@ -41,3 +41,10 @@
   mysql_user: name=cinder password={{ CINDER_DBPASS }} priv=cinder.*:ALL state=present
 - name: create cinder database remote user
   mysql_user: host=% name=cinder password={{ CINDER_DBPASS }} priv=cinder.*:ALL state=present
+
+- name: create heat database
+  mysql_db: name=heat state=present
+- name: create heat database localhost user
+  mysql_user: name=heat password={{ HEAT_DBPASS }} priv=heat.*:ALL state=present
+- name: create heat database remote user
+  mysql_user: host=% name=heat password={{ HEAT_DBPASS }} priv=heat.*:ALL state=present

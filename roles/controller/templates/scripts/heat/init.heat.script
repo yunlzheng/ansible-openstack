@@ -1,0 +1,10 @@
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 user-create --name=heat --pass={{ HEAT_PASS }} --email=heat@example.com
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 user-role-add --user=heat --tenant=service --role=admin
+
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-create --name=heat --type=orchestration --description="Orchestration"
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 endpoint-create --service-id=$(keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-list | awk '/ orchestration / {print $2}')  --publicurl=http://controller:8004/v1/%\(tenant_id\)s --internalurl=http://controller:8004/v1/%\(tenant_id\)s --adminurl=http://controller:8004/v1/%\(tenant_id\)s
+
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-create --name=heat-cfn --type=cloudformation --description="Orchestration CloudFormation"
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 endpoint-create --service-id=$(keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-list | awk '/ cloudformation / {print $2}') --publicurl=http://controller:8000/v1 --internalurl=http://controller:8000/v1 --adminurl=http://controller:8000/v1
+
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 role-create --name heat_stack_user

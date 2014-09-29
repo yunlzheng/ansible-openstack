@@ -1,0 +1,37 @@
+---
+- name: Install the Orchestration module on the controller node
+  apt: name={{ item }}
+  with_items:
+    - heat-api
+    - heat-api-cfn
+    - heat-engine
+
+- name: try remove heat sqllite db file
+  shell: rm /var/lib/heat/heat.sqlite || touch logs/heat.sqllite.db.removed
+
+- name: upload headt configuration file
+  template: src=etc/heat/heat.conf dest=/etc/heat/heat.conf backup=yes
+  notify:
+    - restart heat-api
+    - restart heat-api-cfn
+    - restart heat-engine
+
+- name: sync heat database
+  shell: su -s /bin/sh -c "heat-manage db_sync" heat
+
+- name: keystone register heat service user [step1 upload script]
+  template: src=scripts/heat/init.heat.script dest=/opt/init.heat.sh mode=744
+
+- name: keystone register heat service user [step2 load script]
+  shell: /opt/init.heat.sh && touch logs/registr.heat.completed
+  args:
+    creates: logs/registr.heat.completed
+
+- name: restart heat-api
+  service: name=heat-api state=restarted
+
+- name: restart heat-api-cfn
+  service: name=heat-api-cfn state=restarted
+
+- name: restart heat-engine
+  service: name=heat-engine state=restarted

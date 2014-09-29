@@ -1,0 +1,12 @@
+---
+- name: Install the Telemetry service on the controller node
+  apt: name={{ item }}
+  with_items:
+    - ceilometer-api
+    - ceilometer-collector
+    - ceilometer-agent-central
+    - ceilometer-agent-notification
+    - ceilometer-alarm-evaluator
+    - ceilometer-alarm-notifier
+    - python-ceilometerclient
+    - mongodb-server

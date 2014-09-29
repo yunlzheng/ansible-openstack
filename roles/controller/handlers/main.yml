@@ -37,3 +37,12 @@
 
 - name: restart cinder-api
   service: name=cinder-api state=restarted
+
+- name: restart heat-api
+  service: name=heat-api state=restarted
+
+- name: restart heat-api-cfn
+  service: name=heat-api-cfn state=restarted
+
+- name: restart heat-engine
+  service: name=heat-engine state=restarted
