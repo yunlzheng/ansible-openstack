@@ -14,11 +14,12 @@
     - openvswitch-datapath-dkms
 - name: restart openvswitch-switch
   service: name=openvswitch-switch state=restarted
-- name: Add the integration bridge
-  shell: ovs-vsctl add-br br-int && touch neutron.br-int.added
-  args:
-    creates: neutron.br-int.added
+
+- name: add the integreation bridge
+  openvswitch_bridge: bridge=br-int state=present
+
 - name: restart nova-compute
   service: name=nova-compute state=restarted
+
 - name: restart neutron-plugin-openvswitch-agent
   service: name=neutron-plugin-openvswitch-agent state=restarted
