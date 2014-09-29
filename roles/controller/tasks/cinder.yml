@@ -24,6 +24,6 @@
   template: src=scripts/keystone/init.cinder.script dest=/opt/init.cinder.sh mode=744
 
 - name: keystone register cinder service user [step2 load script]
-  shell: /opt/init.cinder.sh && logs/registr.cinder.completed
+  shell: /opt/init.cinder.sh && touch logs/registr.cinder.completed
   args:
     creates: logs/registr.cinder.completed
