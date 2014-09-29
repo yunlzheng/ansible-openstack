@@ -39,9 +39,9 @@
   service: name=openvswitch-switch state=restarted
 
 - name: Add the integration bridge
-  shell: ovs-vsctl add-br br-int && touch neutron.br-int.added
+  shell: ovs-vsctl add-br br-int && touch neutron.br-int.success || touch neutron.br-int.added
   args:
-    creates: neutron.br-int.added
+    creates: neutron.br-int.success
 
 - name: Add the external bridge
   shell: ovs-vsctl add-br br-ex && touch neutron.br-ex.added
