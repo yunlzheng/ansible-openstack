@@ -38,20 +38,29 @@
 - name: Restart the OVS service
   service: name=openvswitch-switch state=restarted
 
-- name: Add the integration bridge
-  shell: ovs-vsctl add-br br-int && touch neutron.br-int.success || touch neutron.br-int.added
-  args:
-    creates: neutron.br-int.success
+# - name: Add the integration bridge
+#   shell: ovs-vsctl add-br br-int && touch neutron.br-int.success || touch neutron.br-int.added
+#   args:
+#     creates: neutron.br-int.success
 
-- name: Add the external bridge
-  shell: ovs-vsctl add-br br-ex && touch neutron.br-ex.added
-  args:
-    creates: neutron.br-ex.added
+# - name: Add the external bridge
+#   shell: ovs-vsctl add-br br-ex && touch neutron.br-ex.added
+#   args:
+#     creates: neutron.br-ex.added
+
+# - name: Add a port to the external bridge that connects to the physical external network interface
+#   shell: ovs-vsctl add-port br-ex {{ INTERFACE_NAME }} && touch neutron.br-ex-port.added
+#   args:
+#     creates: neutron.br-ex-port.added
+
+- name: add the integreation bridge
+  openvswitch_bridge: bridge=br-int state=present
+
+- name: add the external bridge
+  openvswitch_bridge: bridge=br-ex state=present
 
 - name: Add a port to the external bridge that connects to the physical external network interface
-  shell: ovs-vsctl add-port br-ex {{ INTERFACE_NAME }} && touch neutron.br-ex-port.added
-  args:
-    creates: neutron.br-ex-port.added
+  openvswitch_port: bridge=br-ex port={{ INTERFACE_NAME }} state=present
 
 - name: restart service
   shell: echo hello service
