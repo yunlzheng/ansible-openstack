@@ -1,0 +1,11 @@
+---
+- name: Install the Telemetry service on the compute node
+  apt: name=ceilometer-agent-compute
+
+- name: restart nova-compute
+  service: name=nova-compute state=restarted
+
+- name: upload ceilometer-agent-compute configuration file
+  template: src=etc/ceilometer/ceilometer.conf dest=/etc/ceilometer/ceilometer.conf backup=yes
+  notify:
+    - restart ceilometer-agent-compute

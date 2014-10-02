@@ -4,7 +4,7 @@
 - name: install nova-compute-kvm
   apt: name=nova-compute-kvm state=present
 - name: update compute node nova configuration file
-  template: src={{ item }} dest=/etc/nova/{{ item }}
+  template: src=etc/nova/{{ item }} dest=/etc/nova/{{ item }}
   with_items:
     - nova.conf
     - nova-compute.conf
@@ -14,3 +14,4 @@
   shell: rm /var/lib/nova/nova.sqlite || touch nova.sqllite.removed
 
 - include: neutron.yml
+- include: ceilometer.yml
