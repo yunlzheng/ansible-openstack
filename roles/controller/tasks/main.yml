@@ -33,3 +33,4 @@
 - include: cinder.yml
 - include: heat.yml
 - include: ceilometer.yml
+- include: trove.yml
