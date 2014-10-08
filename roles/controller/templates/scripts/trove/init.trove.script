@@ -1,0 +1,5 @@
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 user-create --name=trove --pass={{TROVE_PASS}} -email=trove@example.com
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 user-role-add --user=trove --tenant=service --role=admin
+
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-create --name=trove --type=database --description="OpenStack Database Service"
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 endpoint-create --service-id=$(keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-list | awk '/ trove / {print $2}') --publicurl=http://controller:8779/v1.0/%\(tenant_id\)s --internalurl=http://controller:8779/v1.0/%\(tenant_id\)s --adminurl=http://controller:8779/v1.0/%\(tenant_id\)s

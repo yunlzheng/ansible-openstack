@@ -1,0 +1,5 @@
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 user-create --name=ceilometer --pass={{CEILOMETER_PASS}} -- email=ceilometer@example.com
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 user-role-add --user=ceilometer --tenant=service --role=admin
+
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-create --name=ceilometer --type=metering --description="Telemetry"
+keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 endpoint-create --service-id=$(keystone --os-token={{ ADMIN_TOKEN }} --os-endpoint=http://controller:35357/v2.0 service-list | awk '/ metering / {print $2}') --publicurl=http://controller:8777 --internalurl=http://controller:8777 --adminurl=http://controller:8777

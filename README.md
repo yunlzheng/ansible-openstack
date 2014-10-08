@@ -7,8 +7,8 @@ We can use vagrant provison feature with ansible install openstack in vagrant si
 
 ### Requirements
 
-* Install Vagrnat in your local.
-* Install Ansible in your local.
+* Install Vagrant 1.6.5 in your local.
+* Install Ansible 1.6.8 in your local.
 * Get the base vagrant box from this [ubuntu/trusty64](https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box)
 
 For linux/Mac user
@@ -34,6 +34,7 @@ vagrant up --provision
 * controller 10.1.0.11(1 processor, memery 1 GB)
 * network 10.1.0.12(1 processor, memery 512 MB)
 * compute1 10.1.0.13(1 processor, memory 2 GB)
+* block1 10.1.0.41(1 processor, memory 512 MB)
 
 ## How to use it
 

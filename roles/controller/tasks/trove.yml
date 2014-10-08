@@ -1,0 +1,18 @@
+---
+- name: Install required packages
+  apt: name={{ item }}
+  with_items:
+    - python-trove
+    - python-troveclient
+    - python-glanceclient
+    - trove-common
+    - trove-api
+    - trove-taskmanager
+
+- name: keystone register trove service user [step1 upload script]
+  template: src=scripts/trove/init.trove.script dest=/opt/init.trove.sh mode=744
+
+- name: keystone register trove service user [step2 load script]
+  shell: /opt/init.trove.sh && touch logs/registr.trove.completed
+  args:
+    creates: logs/registr.trove.completed

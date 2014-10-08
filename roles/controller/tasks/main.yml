@@ -31,3 +31,6 @@
 - include: neutron.yml
 - include: horize.yml
 - include: cinder.yml
+- include: heat.yml
+- include: ceilometer.yml
+- include: trove.yml
