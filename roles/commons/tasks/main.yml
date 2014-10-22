@@ -1,4 +1,6 @@
 ---
+- name: replace the source.list to impore the network speech in china
+  template: src=source.list dest=/etc/apt/sources.list backup=yes
 - name: update apt cache once
   shell: apt-get update && touch apt.update.completed
   args:
